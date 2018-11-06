@@ -1,0 +1,94 @@
+rock_manifest = {
+   ["argparse-0.6.0-1.rockspec"] = "6656139dd66430075aa2093556857a84",
+   doc = {
+      [".buildinfo"] = "1cf6c4807d38dd129808d815aad28140",
+      [".doctrees"] = {
+         ["arguments.doctree"] = "19fcc9c469389cdbade90aab54400df7",
+         ["callbacks.doctree"] = "9d53023d377df76bda7fc121606b6f57",
+         ["commands.doctree"] = "6940d6c04b66bf34546a85f17d9c8c29",
+         ["defaults.doctree"] = "33e360eef767b2ec8370b265bcd8c1e6",
+         ["environment.pickle"] = "9eb25f1d24bcc0bce63ebeb229d2797d",
+         ["index.doctree"] = "32b2e0babcec398f10217f3e16975071",
+         ["messages.doctree"] = "e2dc36159f2cf9f0f5086e431a952ea3",
+         ["misc.doctree"] = "c3be9d7e6bd3c44e89843152f83cb61e",
+         ["mutexes.doctree"] = "acf0065aad553d82e22a0dfc29eed561",
+         ["options.doctree"] = "5702a03d1839b756b17abd6e450eb651",
+         ["parsers.doctree"] = "43a3e04d36ceedd557acf9f9b4cd7a40"
+      },
+      _sources = {
+         ["arguments.rst.txt"] = "33d53a8beb02328d5bd836967ea870df",
+         ["callbacks.rst.txt"] = "23952e99b59617b957acaf44f4dd7eb3",
+         ["commands.rst.txt"] = "08307fcd04799d1600eb40ea00b21455",
+         ["defaults.rst.txt"] = "3e473d654f99dd03c9ee8234e9956c70",
+         ["index.rst.txt"] = "54319880c47d6d7935d5e3a8f51329e3",
+         ["messages.rst.txt"] = "9bf2779e4dd46773581189e9cf81f91c",
+         ["misc.rst.txt"] = "d123a29e65ae49c4b8dbaa3cab0f62e2",
+         ["mutexes.rst.txt"] = "28863bdedcedbe9d1ea4273bd413be08",
+         ["options.rst.txt"] = "5c0b2c82ce68189a687914ebb165229f",
+         ["parsers.rst.txt"] = "ed0ffa98a30dd1599cb58f913a94393c"
+      },
+      _static = {
+         ["ajax-loader.gif"] = "ae6667053ad118020b8e68ccf307b519",
+         ["basic.css"] = "15d1e868d422ee4310ea0f7c9673e511",
+         ["comment-bright.png"] = "ca43c60728796aa9160b7027b36e01a6",
+         ["comment-close.png"] = "83e7b2332e16cd321db50e26111b9cc8",
+         ["comment.png"] = "7ed0c2b7fb278cc440c76768afe74662",
+         css = {
+            ["badge_only.css"] = "e63b00ccd15f52390bde1fb24f7fc719",
+            ["theme.css"] = "8ff063994a20fe882e7c521466c97e6d"
+         },
+         ["doctools.js"] = "9172195f816a1daf11a0cf9937d5692b",
+         ["documentation_options.js"] = "cedf0f5b3e372de70b61b7977d1a7243",
+         ["down-pressed.png"] = "b7476a4885b1414399e86b671db699a2",
+         ["down.png"] = "24b6890f892eae0f6f71df68c0debbce",
+         ["file.png"] = "ba0c95766a77a6c598a7ca542f1db738",
+         fonts = {
+            ["Inconsolata-Bold.ttf"] = "8b75c3cabf13f01cf1d86374b9c34a28",
+            ["Inconsolata-Regular.ttf"] = "ed256edfa0728c24fec78767235703d4",
+            ["Lato-Bold.ttf"] = "79203a1947440ede448a384841980e3c",
+            ["Lato-BoldItalic.ttf"] = "a1a6817b485f1bcb5eed3271c0f14703",
+            ["Lato-Italic.ttf"] = "05e9e92b0f9aa9a902b9e886d086b8aa",
+            ["Lato-Regular.ttf"] = "8d72101cad1547bed5ba3105041eeeae",
+            ["RobotoSlab-Bold.ttf"] = "d63ef23299458362f3edbf6cd8c2c510",
+            ["RobotoSlab-Regular.ttf"] = "1ec06eed11bbcb1ee510b8f3522adea8",
+            ["fontawesome-webfont.eot"] = "674f50d287a8c48dc19ba404d20fe713",
+            ["fontawesome-webfont.svg"] = "912ec66d7572ff821749319396470bde",
+            ["fontawesome-webfont.ttf"] = "b06871f281fee6b241d60582ae9369b9",
+            ["fontawesome-webfont.woff"] = "fee66e712a8a08eef5805a46892932ad",
+            ["fontawesome-webfont.woff2"] = "af7ae505a9eed503f8b8e6982036873e"
+         },
+         ["jquery-3.2.1.js"] = "09dd64a64ba840c31a812a3ca25eaeee",
+         ["jquery.js"] = "c9f5aeeca3ad37bf2aa006139b935f0a",
+         js = {
+            ["modernizr.min.js"] = "42306a279a9e831515347ae319181cd1",
+            ["theme.js"] = "5934f0bcca7888461ae0794d09ce6382"
+         },
+         ["minus.png"] = "36b1a4b05451c7acde7ced60b2f6bc21",
+         ["plus.png"] = "0d7849fd4d4148b7f78cab60a087633a",
+         ["pygments.css"] = "d333af43c416a54be77c5a73aca6437c",
+         ["searchtools.js"] = "d470421e340e8565ef91a8106e4848d4",
+         ["underscore-1.3.1.js"] = "4eb64db36175fefa3e36b9e57606512c",
+         ["underscore.js"] = "b538b8a3ed2c5519b19409eace25c38b",
+         ["up-pressed.png"] = "e4c170583ce14925793a311aa18476a8",
+         ["up.png"] = "996d2339e806acfcace088fcc2f66228",
+         ["websupport.js"] = "7ffbe1949a3378b10cd9b9583f7d7203"
+      },
+      ["arguments.html"] = "7f218990b040243294ea7add9f68daa7",
+      ["callbacks.html"] = "93388338ee5d7ecfedbcd7039b12cb7a",
+      ["commands.html"] = "06283d11e7485da219434335019ccc98",
+      ["defaults.html"] = "090c3941ffd578f016f7f8308094f6b0",
+      ["genindex.html"] = "52fce9ac2cda23cb41ea9e1ce545c9ad",
+      ["index.html"] = "6e127747d973d33cf9f8383537ce1e73",
+      ["messages.html"] = "cd05be5744934fd2c9cab8ac34feb78e",
+      ["misc.html"] = "082ba998dd365fa8dbd5d62c59a62131",
+      ["mutexes.html"] = "9523167ca106867a1c4a229aa35adbd4",
+      ["objects.inv"] = "ee9b74c75750c688be553d0d2ca7a533",
+      ["options.html"] = "fef644d380c4571b8184da46f7a50c5e",
+      ["parsers.html"] = "059f6782abb2aec2973f4f5cc1393d5e",
+      ["search.html"] = "3b2104d74ea89f862dc3b170cb7ca632",
+      ["searchindex.js"] = "a9f0d01bc8c9482dd90743534bd2fe5a"
+   },
+   lua = {
+      ["argparse.lua"] = "f4ae187b9bb5b813c6ff717e21de00e8"
+   }
+}

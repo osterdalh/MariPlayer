@@ -116,7 +116,7 @@ if mode == "human" then
 else
     -- algo
     emu.speedmode("maximum");
-    skip_frames = 2;
+    skip_frames = 4;
     start_delay = 175;
     send_all_pixels = 1500;
 end;
@@ -145,6 +145,9 @@ addr_injury_timer = 0x079e;
 addr_swimming_flag = 0x0704;
 addr_tiles = 0x500;
 
+memory.writebyte(addr_player_status, 3)
+memory.writebyte(addr_time, 999)
+memory.writebyte(addr_life, 20)
 -- ===========================
 --         Functions
 -- ===========================
@@ -325,6 +328,7 @@ end;
 
 -- get_enemies - Returns enemy location
 function get_enemies()
+
     local enemies = {};
     for slot=0,4 do
       local enemy = memory.readbyte(0xF + slot);
@@ -460,6 +464,32 @@ function get_screen()
     return;
 end;
 
+function table_to_string(tbl)
+    local result = "{"
+    for k, v in pairs(tbl) do
+        -- Check the key type (ignore any numerical keys - assume its an array)
+        if type(k) == "string" then
+            result = result.."[\""..k.."\"]".."="
+        end
+
+        -- Check the value type
+        if type(v) == "table" then
+            result = result..table_to_string(v)
+        elseif type(v) == "boolean" then
+            result = result..tostring(v)
+        else
+            result = result.."\""..v.."\""
+        end
+        result = result..","
+    end
+    -- Remove leading commas from the result
+    if result ~= "" then
+        result = result:sub(1, result:len()-1)
+    end
+    return result.."}"
+end
+
+
 -- get_tiles - Returns tiles data (and displays them on screen)
 -- Only returns tiles that have changed since last update
 -- Format: tiles_<frame_number>#<x(1 hex digits)><y (1 hex digits)><value (1 hex digits)>|...
@@ -488,22 +518,42 @@ function get_tiles()
     );       -- P30 = White (NES Palette 30 color)
   
     -- Calculating tile types
+    mt = {}          -- create the matrix
+    for i=1,13 do
+      mt[i] = {}     -- create a new row
+      for j=1,16 do
+        mt[i][j] = nil
+      end
+    end
+    x = 0
+    y = 0
+
+    matrix_screen = {}
+
     for box_y = -4*16,8*16,16 do
+        y = y + 1
         local tile_string = "";
         local data_count = 0;
         for box_x = -7*16,8*16,16 do
-      
+            x = x + 1
             -- 0 = Empty space
-            local tile_value = 0;
-            local color = 0;
-            local fill = 0;
+            tile_value = 0;
+            color = 0;
+            fill = 0;
       
-            -- +1 = Not-Empty space (e.g. hard surface, object)
             local curr_tile_type = get_tile_type(box_x, box_y);
-            if (curr_tile_type == 1) and (curr_y_position + box_y < 0x1B0) then
+            if (curr_tile_type == 0) then
+                tile_value = 0;
+                mt[y][x] = tile_value
+            end
+
+            -- +1 = Not-Empty space (e.g. hard surface, object)
+            if (curr_tile_type == 1) then
                 tile_value = 1;
                 color = "P30"; -- White (NES Palette 30 color)
-            end;
+            end
+
+
       
             -- +2 = Enemies
             for i = 1,#enemies do
@@ -515,6 +565,12 @@ function get_tiles()
                     fill = "P3F"; -- Black (NES Palette 3F color);
                 end;
             end;
+            if (tile_value == 2) then
+                tile_value = 2
+                mt[y][x] = tile_value
+                
+            end
+
             
             -- +3 = Mario
             local dist_x = math.abs(curr_x_position - (curr_x_position + box_x - left_x + 108));
@@ -524,11 +580,23 @@ function get_tiles()
                 color = "P05"; -- Red (NES Palette 05 color)
                 fill = color;
             end;
-            
+
+
+   
+
             -- Drawing tile
-            local tile_x = 50 + 5 * (box_x / 16);
-            local tile_y = 55 + 5 * (box_y / 16);
+            tile_x = 50 + 5 * (box_x / 16);
+            tile_y = 55 + 5 * (box_y / 16);
+
+            tiles[(box_x / 16) + 7][(box_y / 16) + 4] = tile_value;
+            --tiles_string = (table_to_string(tiles))
+            matrix_screen =  (tiles)
+            --tiles_string = (table_to_string(tiles))
+        
+            -- sets the default output file as test.lua
             
+            -- appends a word test to the last line of the file
+
             if (tile_value ~= 0) then
                 gui.box(tile_x - 2, tile_y - 2, tile_x + 2, tile_y + 2, fill, color);
             end;
@@ -543,6 +611,7 @@ function get_tiles()
                     --noinspection StringConcatenationInLoops
                     tile_string = tile_string .. "|" .. string.format("%01x%01x%01x", (box_x / 16) + 7, (box_y / 16) + 4, tile_value);
                     data_count = data_count + 1;
+                    print(tile_string)
                 end;
             end;
         end;
@@ -552,7 +621,6 @@ function get_tiles()
     end;
     return;
 end;
-
 -- check_if_started - Checks if the timer has started to decrease
 -- this is to avoid receiving commands while the level is loading, or the animation is still running
 function check_if_started()
@@ -807,8 +875,20 @@ emu.registerexit(exit_hook);
 --         Main Loop
 -- ===========================
 -- Opening pipes
+
+
+
+
 reset_vars();
 open_pipes();
+
+
+--file = io.open("../training_data/inputs.txt", "a")
+--file:write("A, left, right, up, down, B, start, select", "\n")
+frame = 0
+outDir = ".\\../training_data\\"
+
+print(_VERSION)
 
 function main_loop()
     get_tiles()
@@ -893,10 +973,57 @@ function main_loop()
     if force_refresh < 0 then force_refresh = 0; end;
     running_thread = 0;
 
+
+    if (frame % 4 == 0) and (frame > 40) then
+        input_player = joypad.read(1)
+        --file:write(tostring((input_player["A"])) .. "," .. tostring((input_player["left"])) .. "," .. tostring((input_player["right"])) .. ","  .. tostring((input_player["up"])) .. ","  .. tostring((input_player["down"])) .. ","  .. tostring((input_player["B"])) .. ","  .. tostring((input_player["start"])) .. ","  .. tostring((input_player["select"])),"\n")
+        file_inputs = io.open("C:\\Users\\hanso\\Desktop\\MariPlayer\\Prepros_training_data\\inputs.csv", "a")
+        file_inputs:write(tostring((input_player["A"])) .. "," .. tostring((input_player["left"])) .. "," .. tostring((input_player["right"])) .. ","  .. tostring((input_player["up"])) .. ","  .. tostring((input_player["down"])) .. ","  .. tostring((input_player["B"])) .. ","  .. tostring((input_player["start"])) .. ","  .. tostring((input_player["select"])), '\n')
+        file_inputs:close()
+        
+        --gui.savescreenshotas("frame_nr" .. tostring(frame) .. ".png", "../training_data/", 0)
+        --gui.savescreenshotas(string.format("%s\\frame%d.png", outDir, frame))
+        --print(input_player)
+
+
+        b = table_to_string(matrix_screen)
+        print(frame,b)
+        file_matrix = io.open("C:\\Users\\hanso\\Desktop\\MariPlayer\\Prepros_training_data\\screen_matrix.csv", "a")
+        file_matrix:write(b, '\n')
+        file_matrix:close()
+    end
+    frame = frame + 1;
+    
+
     emu.frameadvance();
 
 end;
 
+
+
+
+
 while (true) do
     main_loop();
+    if (curr_x_position >= 3162) then
+        memory.writebyte(addr_player_state,0x06);
+    
+        if (get_is_dead() == 1) then
+            print("forceDead");
+            file_matrix:close()
+            file_inputs:close()
+
+            break           
+        end
+    end
+    if (get_is_dead() == 1) then
+        print("EnemyDead");
+        file_matrix:close()
+        file_inputs:close()
+        break           
+    end       
+    --print(frame, tile_value)
+    --print("fas", table.getn(matrix_screen));
+    --print("da" ,tiles)
+
 end;
