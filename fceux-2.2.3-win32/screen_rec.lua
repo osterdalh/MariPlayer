@@ -984,10 +984,10 @@ function main_loop()
         --gui.savescreenshotas("frame_nr" .. tostring(frame) .. ".png", "../training_data/", 0)
         --gui.savescreenshotas(string.format("%s\\frame%d.png", outDir, frame))
         --print(input_player)
-
+        print(input_player)
 
         b = table_to_string(matrix_screen)
-        print(frame,b)
+        --print(frame,b)
         file_matrix = io.open("C:\\Users\\hanso\\Desktop\\MariPlayer\\Prepros_training_data\\screen_matrix.csv", "a")
         file_matrix:write(b, '\n')
         file_matrix:close()
