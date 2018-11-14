@@ -146,7 +146,6 @@ addr_swimming_flag = 0x0704;
 addr_tiles = 0x500;
 
 memory.writebyte(addr_player_status, 3)
-memory.writebyte(addr_time, 999)
 memory.writebyte(addr_life, 20)
 -- ===========================
 --         Functions
@@ -657,33 +656,7 @@ end;
 -- check_if_finished - Checks if the level is finished (life lost, finish line crossed, level increased)
 -- The target (reward_threshold) is 40 pixels before the castle
 -- The finish line (where the game will automatically close) is 15 pixels before the castle
-function check_if_finished()
-    if (get_is_dead() == 100)
-        or ((curr_x_position >= max_distance + 18) and (curr_x_position <= max_distance + 200))
-        or (get_life() < 0)
-        or (get_level() > 4 * (target_world - 1) + (target_level - 1)) then
-        -- Level finished
-        -- is_finished will be written to pipe with the get_data() function
-        is_started = 0;
-        is_finished = 1;
 
-
-
-        -- allalalaallaa
-        -- Processing manually last command
-        read_commands();
-        if commands_rcvd == 1 then
-            commands_rcvd = 0
-            update_positions();
-            show_curr_distance();
-            get_tiles();
-            get_data();
-            get_screen();
-            ask_for_commands();
-        end;
-    end;
-    return;
-end;
 
 -- ask_for_commands - Mark the current frame has processed (to listen for matching command)
 function ask_for_commands()
@@ -903,8 +876,7 @@ function main_loop()
     -- Checking if game is started or is finished
     if is_started == 0 then
         check_if_started();
-    elseif is_finished == 0 then
-        check_if_finished();
+ 
     end;
 
     -- Checking if game has started, if not, pressing "start" to start it
@@ -956,7 +928,7 @@ function main_loop()
         elseif 0 == changing_level then
             -- Meta mission - Sending level change required
             get_data();              -- Sends is_finished
-            write_to_pipe("reset");  -- Tells python to reset frame number and send change level
+            --write_to_pipe("reset");  -- Tells python to reset frame number and send change level
             changing_level = 1;
         else
             -- Waiting for level change
@@ -1020,7 +992,7 @@ function main_loop()
         file_step:close()
     end
 
-    if (frame % 20 == 0) and (frame > 40) then
+    if (frame % 30 == 0) and (frame > 40) then
         joypad.write(1, {A=false, up=false, left=false, B=false, select=false, right=false, down=false, start=false})
     end
 
@@ -1061,17 +1033,14 @@ while (true) do
     main_loop();
 
 
-    if (curr_x_position >= 3162) then
-        memory.writebyte(addr_player_state,0x06);
     
-        if (get_is_dead() == 1) then
-            print("forceDead");
-            file_matrix:close()
-            file_inputs:close()
-
-            break           
-        end
+    if (get_is_dead() == 1) then
+        print("forceDead");
+        file_matrix:close()
+        file_inputs:close()
+        break           
     end
+    
     if (get_is_dead() == 1) then
         print("EnemyDead");
         file_matrix:close()
